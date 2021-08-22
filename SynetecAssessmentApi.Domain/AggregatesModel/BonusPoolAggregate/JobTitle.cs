@@ -1,12 +1,12 @@
-﻿namespace SynetecAssessmentApi.Persistence.Data.Models
+﻿namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
 {
-    public class DepartmentModel
+    public class JobTitle
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
 
-        public DepartmentModel(
+        public JobTitle(
             int id,
             string title,
             string description)
@@ -14,6 +14,8 @@
             Id = id;
             Title = title;
             Description = description;
+
         }
+
     }
 }

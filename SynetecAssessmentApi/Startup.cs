@@ -5,7 +5,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using SynetecAssessmentApi.Persistence;
+using SynetecAssessmentApi.Application.Services;
+using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
+using SynetecAssessmentApi.Domain.SeedWork;
+using SynetecAssessmentApi.Persistence.Data.DbContexts;
+using SynetecAssessmentApi.Persistence.Data.Repositories;
+using System;
 
 namespace SynetecAssessmentApi
 {
@@ -21,7 +26,9 @@ namespace SynetecAssessmentApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "SynetecAssessmentApi", Version = "v1" });
@@ -29,6 +36,13 @@ namespace SynetecAssessmentApi
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "HrDb"));
+
+            services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
+            services.AddScoped<IBonusService, BonusService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IJobTitleRepository, JobTitleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

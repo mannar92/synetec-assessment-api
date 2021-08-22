@@ -1,31 +1,28 @@
-﻿using SynetecAssessmentApi.Domain.SeedWork;
-using SynetecAssessmentApi.SeedWork.Domain;
-
-namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
-{
-    public class Employee : Entity
+﻿namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate 
+{ 
+    public class Employee
     {
-        public string Fullname { get; private set; }
-        public string JobTitle { get; private set; }
-
-        private int _departmentId;
-        private int _salary;
-
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public int JobTitleId { get; set; }
+        public int Salary { get; set; }
+        public int DepartmentId { get; set; }
 
         public Employee(
             int id,
-            string fullname,
-            string jobTitle,
+            string name,
+            string surname,
+            int jobTitleId,
             int salary,
             int departmentId)
         {
             Id = id;
-            Fullname = fullname;
-            JobTitle = jobTitle;
-            _salary = salary;
-            _departmentId = departmentId;
+            Name = name;
+            Surname = surname;
+            JobTitleId = jobTitleId;
+            Salary = salary;
+            DepartmentId = departmentId;
         }
-
-        
     }
 }

@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace SynetecAssessmentApi.Persistence.Data.Interfaces
+namespace SynetecAssessmentApi.Domain.SeedWork
 {
     public interface IGenericRepository<T> where T : class
     {
-        IQueryable<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
 
         T GetById(object id);
 

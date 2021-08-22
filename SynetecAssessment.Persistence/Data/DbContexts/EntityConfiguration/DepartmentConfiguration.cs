@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SynetecAssessmentApi.Persistence.Data.Models;
+using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
 
 namespace SynetecAssessmentApi.Persistence.Data.DbContexts.EntityConfiguration
 {
-    class DepartmentConfiguration : IEntityTypeConfiguration<DepartmentModel>
+    class DepartmentConfiguration : IEntityTypeConfiguration<Department>
     {
-        public void Configure(EntityTypeBuilder<DepartmentModel> builder)
+        public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.HasKey(d => d.Id);
 
@@ -17,13 +17,13 @@ namespace SynetecAssessmentApi.Persistence.Data.DbContexts.EntityConfiguration
             SeedData(builder);
         }
 
-        private void SeedData(EntityTypeBuilder<DepartmentModel> builder) 
+        private void SeedData(EntityTypeBuilder<Department> builder) 
         {
             builder.HasData(
-                new DepartmentModel(1, "Finance", "The finance department for the company"),
-                new DepartmentModel(2, "Human Resources", "The Human Resources department for the company"),
-                new DepartmentModel(3, "IT", "The IT support department for the company"),
-                new DepartmentModel(4, "Marketing", "The Marketing department for the company")
+                new Department(1, "Finance", "The finance department for the company"),
+                new Department(2, "Human Resources", "The Human Resources department for the company"),
+                new Department(3, "IT", "The IT support department for the company"),
+                new Department(4, "Marketing", "The Marketing department for the company")
             );
         }
     }

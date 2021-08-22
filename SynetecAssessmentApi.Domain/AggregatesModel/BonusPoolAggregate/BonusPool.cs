@@ -24,7 +24,7 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
             _employees = new List<Employee>();
             _poolDate = DateTime.Now;
             _totalCompanyProfit = totalCompanyProfit;
-            _bonusPercentage = bonusPercentage;        
+            _bonusPercentage = bonusPercentage;     
         }
 
         public void AddEmployees(List<Employee> employees)

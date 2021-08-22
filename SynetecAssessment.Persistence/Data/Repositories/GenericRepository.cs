@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SynetecAssessmentApi.Domain.SeedWork;
 using SynetecAssessmentApi.Persistence.Data.DbContexts;
-using SynetecAssessmentApi.Persistence.Data.Interfaces;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +15,7 @@ namespace SynetecAssessmentApi.Persistence.Data.Repositories
         public GenericRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
-            _dbSet = _dbContext.Set<T>();
+            _dbSet = dbContext.Set<T>();
         }
 
         public void Create(T entity)
@@ -28,9 +28,10 @@ namespace SynetecAssessmentApi.Persistence.Data.Repositories
             _dbSet.Remove(existing);
         }
 
-        public IQueryable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return _dbSet;
+            var test = _dbContext.Employees.ToList();
+            return await _dbSet.ToListAsync();
         }
 
         public T GetById(object id)
