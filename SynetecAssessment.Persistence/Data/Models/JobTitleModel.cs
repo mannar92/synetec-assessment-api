@@ -1,6 +1,6 @@
 ﻿namespace SynetecAssessmentApi.Persistence.Data.Models
 {
-    class JobTitleModel
+    public class JobTitleModel
     {
         public int Id { get; set; }
         public string Title { get; set; }

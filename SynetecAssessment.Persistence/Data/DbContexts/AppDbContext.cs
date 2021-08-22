@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SynetecAssessmentApi.Domain;
+using SynetecAssessmentApi.Persistence.Data.Models;
 using System.Reflection;
 
-namespace SynetecAssessmentApi.Persistence
+namespace SynetecAssessmentApi.Persistence.Data.DbContexts
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Department> Departments { get; set; }
-        public DbSet<Employee> Employees { get; set; }
-
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        { }
+        public DbSet<EmployeeModel> Employees { get; set; }
+        public DbSet<DepartmentModel> Departments { get; set; }
+        public DbSet<JobTitleModel> JobTitles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,4 +16,6 @@ namespace SynetecAssessmentApi.Persistence
 
             base.OnModelCreating(modelBuilder);
         }
+
     }
+}

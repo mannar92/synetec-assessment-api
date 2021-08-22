@@ -1,6 +1,6 @@
 ﻿namespace SynetecAssessmentApi.Persistence.Data.Models
 {
-    class DepartmentModel
+    public class DepartmentModel
     {
         public int Id { get; set; }
         public string Title { get; set; }
@@ -14,7 +14,6 @@
             Id = id;
             Title = title;
             Description = description;
-
         }
     }
 }
