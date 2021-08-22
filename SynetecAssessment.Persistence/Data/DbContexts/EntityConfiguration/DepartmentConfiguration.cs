@@ -14,17 +14,18 @@ namespace SynetecAssessmentApi.Persistence.Data.DbContexts.EntityConfiguration
 
             builder.ToTable("Departments");
 
-            SeedData(builder);
+            // Seeding is don in DbInitializer Class
+            // SeedData(builder);
         }
 
-        private void SeedData(EntityTypeBuilder<Department> builder) 
-        {
-            builder.HasData(
-                new Department(1, "Finance", "The finance department for the company"),
-                new Department(2, "Human Resources", "The Human Resources department for the company"),
-                new Department(3, "IT", "The IT support department for the company"),
-                new Department(4, "Marketing", "The Marketing department for the company")
-            );
-        }
+        //private void SeedData(EntityTypeBuilder<Department> builder) 
+        //{
+        //    builder.HasData(
+        //        new Department(1, "Finance", "The finance department for the company"),
+        //        new Department(2, "Human Resources", "The Human Resources department for the company"),
+        //        new Department(3, "IT", "The IT support department for the company"),
+        //        new Department(4, "Marketing", "The Marketing department for the company")
+        //    );
+        //}
     }
 }

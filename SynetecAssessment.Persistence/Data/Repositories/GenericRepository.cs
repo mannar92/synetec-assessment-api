@@ -30,7 +30,6 @@ namespace SynetecAssessmentApi.Persistence.Data.Repositories
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            var test = _dbContext.Employees.ToList();
             return await _dbSet.ToListAsync();
         }
 

@@ -2,6 +2,7 @@
 using SynetecAssessmentApi.SeedWork.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
 {
@@ -19,9 +20,10 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
 
         public BonusPool (
             decimal totalCompanyProfit,
-            double bonusPercentage
+            double bonusPercentage,
+            List<Employee> employees
         ) {
-            _employees = new List<Employee>();
+            _employees = employees;
             _poolDate = DateTime.Now;
             _totalCompanyProfit = totalCompanyProfit;
             _bonusPercentage = bonusPercentage;     
@@ -43,5 +45,12 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
                 // throw employee not found exception
             }
         }
+
+        public int CalculateTotalSalary()
+        {
+            _totalSalaryBudget = _employees.Sum(e => e.Salary);
+            return _totalSalaryBudget;
+        }
+
     }
 }

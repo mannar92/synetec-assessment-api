@@ -5,5 +5,6 @@ namespace SynetecAssessmentApi.Domain.SeedWork
 {
     public interface IEmployeeRepository : IGenericRepository<Employee>
     {
+
     }
 }
