@@ -1,0 +1,47 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SynetecAssessmentApi.Persistence.Data.DbContexts;
+using SynetecAssessmentApi.Persistence.Data.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SynetecAssessmentApi.Persistence.Data.Repositories
+{
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    {
+        private readonly AppDbContext _dbContext;
+        private DbSet<T> _dbSet = null;
+
+        public GenericRepository(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+            _dbSet = _dbContext.Set<T>();
+        }
+
+        public void Create(T entity)
+        {
+        }
+
+        public void Delete(object id)
+        {
+            T existing = _dbSet.Find(id);
+            _dbSet.Remove(existing);
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _dbSet;
+        }
+
+        public T GetById(object id)
+        {
+            return _dbSet.Find(id);
+        }
+
+        public void Update(T entity)
+        {
+            _dbSet.Attach(entity);
+            _dbContext.Entry(entity).State = EntityState.Modified;
+        }
+    }
+}

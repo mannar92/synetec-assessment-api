@@ -20,8 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Interfaces\" />
-    <Folder Include="Data\Repositories\" />
     <Folder Include="Logging\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
