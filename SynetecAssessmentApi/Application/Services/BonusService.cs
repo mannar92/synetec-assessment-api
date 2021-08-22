@@ -1,5 +1,7 @@
-﻿using SynetecAssessmentApi.Application.Dtos;
+﻿using Microsoft.EntityFrameworkCore;
+using SynetecAssessmentApi.Application.Dtos;
 using SynetecAssessmentApi.Domain.SeedWork;
+using SynetecAssessmentApi.Persistence.Data.DbContexts;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

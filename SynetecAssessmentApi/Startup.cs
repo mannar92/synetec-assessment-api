@@ -9,6 +9,7 @@ using SynetecAssessmentApi.Application.Services;
 using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
 using SynetecAssessmentApi.Domain.SeedWork;
 using SynetecAssessmentApi.Persistence.Data.DbContexts;
+using SynetecAssessmentApi.Persistence.Data.DbContexts.DbInitializer;
 using SynetecAssessmentApi.Persistence.Data.Repositories;
 using System;
 
@@ -37,6 +38,7 @@ namespace SynetecAssessmentApi
             services.AddDbContext<AppDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "HrDb"));
 
+            services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IGenericRepository<Employee>, GenericRepository<Employee>>();
             services.AddScoped<IBonusService, BonusService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -65,6 +67,13 @@ namespace SynetecAssessmentApi
             {
                 endpoints.MapControllers();
             });
+
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope())
+            {
+                var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
+                dbInitializer.SeedData();
+            }
         }
     }
 }
