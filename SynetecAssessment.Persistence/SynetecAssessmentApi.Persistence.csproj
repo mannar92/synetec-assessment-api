@@ -13,4 +13,12 @@
     <ProjectReference Include="..\SynetecAssessmentApi.Domain\SynetecAssessmentApi.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\DbContexts\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Data\Repositories\" />
+    <Folder Include="Logging\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+
 </Project>

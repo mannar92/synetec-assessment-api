@@ -20,4 +20,3 @@ namespace SynetecAssessmentApi.Persistence
             base.OnModelCreating(modelBuilder);
         }
     }
-}
