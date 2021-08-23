@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public string Surname { get; set; }
         public int JobTitleId { get; set; }
-        public int Salary { get; set; }
+        public decimal Salary { get; set; }
         public int DepartmentId { get; set; }
 
         public Employee(
@@ -14,7 +14,7 @@
             string name,
             string surname,
             int jobTitleId,
-            int salary,
+            decimal salary,
             int departmentId)
         {
             Id = id;

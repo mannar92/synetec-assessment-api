@@ -8,25 +8,24 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
 {
     public class BonusPool : Entity, IAggregateRoot
     {
-        private decimal _totalCompanyProfit;
-
-        private DateTime _poolDate;
-        private double _bonusPercentage;
-
-        private int _totalSalaryBudget;
-
-        private readonly List<Employee> _employees;
+        public DateTime PoolDate { get; private set; }
         public IReadOnlyCollection<Employee> Employees => _employees;
+
+        private decimal _totalCompanyProfit;
+        private decimal _profitToBonusPercentage;
+        private decimal _totalSalaryBudget;
+        private readonly List<Employee> _employees;
 
         public BonusPool (
             decimal totalCompanyProfit,
-            double bonusPercentage,
+            decimal profitToBonusPercentage,
             List<Employee> employees
         ) {
-            _employees = employees;
-            _poolDate = DateTime.Now;
+            PoolDate = DateTime.Now;
+            _employees.AddRange(employees);
             _totalCompanyProfit = totalCompanyProfit;
-            _bonusPercentage = bonusPercentage;     
+            _profitToBonusPercentage = profitToBonusPercentage;
+            _totalSalaryBudget = CalculateTotalSalary();
         }
 
         public void AddEmployees(List<Employee> employees)
@@ -34,23 +33,29 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
             _employees.AddRange(employees);
         }
 
-        public void CalculateBonus(int employeeId)
+        public decimal CalculateBonus(int employeeId)
         {
+            decimal bonus = 0;
+            decimal bonusPoolAmount = _profitToBonusPercentage * _totalCompanyProfit;
+
             Employee findEmployee = _employees.Find(e => e.Id == employeeId);
+
             if (findEmployee != null)
             {
-                // calculate
+                decimal salary = findEmployee.Salary;
+                decimal employeeBonusPercentage = salary / _totalSalaryBudget;
+                bonus = employeeBonusPercentage * bonusPoolAmount;
             } else
             {
                 // throw employee not found exception
             }
+
+            return bonus;
         }
 
-        public int CalculateTotalSalary()
+        public decimal CalculateTotalSalary()
         {
-            _totalSalaryBudget = _employees.Sum(e => e.Salary);
-            return _totalSalaryBudget;
+            return _employees.Sum(e => e.Salary); ;
         }
-
     }
 }

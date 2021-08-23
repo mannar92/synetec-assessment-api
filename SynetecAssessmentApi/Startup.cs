@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SynetecAssessmentApi.Application.Extensions;
 using SynetecAssessmentApi.Application.Services;
 using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
 using SynetecAssessmentApi.Domain.SeedWork;
@@ -28,7 +31,19 @@ namespace SynetecAssessmentApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
+
             services.AddControllers();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(o =>
+            {
+                o.Authority = "https://localhost:44310/";
+                o.RequireHttpsMetadata = false;
+                o.Audience = "SynetecAssessmentAPI";
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -48,13 +63,17 @@ namespace SynetecAssessmentApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.ConfigureCustomExceptionMiddleware();
+                // app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SynetecAssessmentApi v1"));
+            } else
+            {
+                app.ConfigureCustomExceptionMiddleware();
             }
 
             app.UseHttpsRedirection();
@@ -74,6 +93,8 @@ namespace SynetecAssessmentApi
                 var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
                 dbInitializer.SeedData();
             }
+
+            loggerFactory.AddFile("../SynetecAssessment.Persistence/Logging/Logs/app-{Date}.txt");
         }
     }
 }
