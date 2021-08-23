@@ -1,14 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SynetecAssessmentApi.Application.Dtos;
 using SynetecAssessmentApi.Application.Services;
-using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
-using System;
+using SynetecAssessmentApi.Persistence.Exceptions;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SynetecAssessmentApi.Presentation.Controllers
@@ -31,6 +28,8 @@ namespace SynetecAssessmentApi.Presentation.Controllers
         }
 
         [HttpPost("getallbonuses")]
+        [ProducesResponseType(typeof(List<BonusDTO>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorDetailsModel), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetAllBonuses([FromBody] BonusRequestDTO bonusRequest)
         {
             var result = await _bonusService.GetAllBonuses(bonusRequest);
@@ -38,6 +37,9 @@ namespace SynetecAssessmentApi.Presentation.Controllers
         }
 
         [HttpPost("getbonusbyemployee")]
+        [ProducesResponseType(typeof(BonusDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ErrorDetailsModel), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetBonusById([Required] int employeeId, [FromBody] BonusRequestDTO bonusRequest)
         {
             var result = await _bonusService.GetBonusById(employeeId, bonusRequest);
