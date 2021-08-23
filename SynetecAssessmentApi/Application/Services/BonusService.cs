@@ -89,10 +89,6 @@ namespace SynetecAssessmentApi.Application.Services
 
                 return employeeBonus;
             }
-            catch (EmployeeNotFoundException)
-            {
-                throw;
-            }
             catch (BonusCalculationException)
             {
                 throw;
