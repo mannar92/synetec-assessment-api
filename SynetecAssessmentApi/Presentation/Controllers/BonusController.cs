@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SynetecAssessmentApi.Application.Dtos;
@@ -13,6 +14,7 @@ namespace SynetecAssessmentApi.Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BonusController : ControllerBase
     {
         private readonly IBonusService _bonusService;

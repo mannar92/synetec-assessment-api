@@ -34,16 +34,18 @@ namespace SynetecAssessmentApi
 
             services.AddControllers();
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
-            {
-                o.Authority = "https://localhost:44310/";
-                o.RequireHttpsMetadata = false;
-                o.Audience = "SynetecAssessmentAPI";
-            });
+            // AUTHENTICATION NOT USED BUT IT IS BEST PRACTISE TO BE USED IN WEB APPS
+
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(o =>
+            //{
+            //    o.Authority = "https://localhost:44310/";
+            //    o.RequireHttpsMetadata = false;
+            //    o.Audience = "SynetecAssessmentAPI";
+            //});
 
             services.AddSwaggerGen(c =>
             {
