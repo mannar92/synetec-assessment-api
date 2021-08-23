@@ -56,29 +56,29 @@ namespace SynetecAssessmentApi.Domain.Tests
             bonusPool = new BonusPool(testProfit, testBonusPercentage, mockData.MockEmployees.ToList());
 
             int testEmployeeId_A = 1;
-            decimal expectedBonus_A = 45.819015m;
+            decimal expectedBonus_A = 45.82m;
             decimal actualBonus_A = bonusPool.CalculateBonus(testEmployeeId_A);
-            Assert.Equal(expectedBonus_A, actualBonus_A, 6);
+            Assert.Equal(expectedBonus_A, actualBonus_A, 2);
 
             int testEmployeeId_B = 2;
-            decimal expectedBonus_B = 68.728522m;
+            decimal expectedBonus_B = 68.73m;
             decimal actualBonus_B = bonusPool.CalculateBonus(testEmployeeId_B);
-            Assert.Equal(expectedBonus_B, actualBonus_B, 6);
+            Assert.Equal(expectedBonus_B, actualBonus_B, 2);
 
             int testEmployeeId_C = 3;
-            decimal expectedBonus_C = 72.546774m;
+            decimal expectedBonus_C = 72.55m;
             decimal actualBonus_C = bonusPool.CalculateBonus(testEmployeeId_C);
-            Assert.Equal(expectedBonus_C, actualBonus_C, 6);
+            Assert.Equal(expectedBonus_C, actualBonus_C, 2);
 
             int testEmployeeId_D = 4;
-            decimal expectedBonus_D = 42.000764m;
+            decimal expectedBonus_D = 42m;
             decimal actualBonus_D = bonusPool.CalculateBonus(testEmployeeId_D);
-            Assert.Equal(expectedBonus_D, actualBonus_D, 6);
+            Assert.Equal(expectedBonus_D, actualBonus_D, 2);
 
             int testEmployeeId_E = 5;
-            decimal expectedBonus_E = 34.364261m;
+            decimal expectedBonus_E = 34.36m;
             decimal actualBonus_E = bonusPool.CalculateBonus(testEmployeeId_E);
-            Assert.Equal(expectedBonus_E, actualBonus_E, 6);
+            Assert.Equal(expectedBonus_E, actualBonus_E, 2);
         }
 
     }

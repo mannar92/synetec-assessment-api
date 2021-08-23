@@ -15,16 +15,23 @@ namespace SynetecAssessmentApi.Application.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
+        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IJobTitleRepository _jobTitleRepository;
 
         public BonusService(
             IMapper mapper,
             IUnitOfWork unitOfWork,
-            IEmployeeRepository employeeRepository
+            IEmployeeRepository employeeRepository,
+            IDepartmentRepository departmentRepository,
+            IJobTitleRepository jobTitleRepository
+
         )
         {
             _mapper = mapper;
-            _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
+            _employeeRepository = employeeRepository;
+            _departmentRepository = departmentRepository;
+            _jobTitleRepository = jobTitleRepository;
         }
 
         public async Task<List<BonusDTO>> GetAllBonuses(BonusRequestDTO bonusRequest)
@@ -34,13 +41,17 @@ namespace SynetecAssessmentApi.Application.Services
                 List<BonusDTO> allBonuses = new List<BonusDTO>();
 
                 BonusPool bonusPool = await CreateBonusPool(bonusRequest);
-
+                
                 foreach (Employee e in bonusPool.Employees)
                 {
                     try
                     {
+                        JobTitle jobTitle = await _jobTitleRepository.GetByIdAsync(e.JobTitleId);
+                        Department department = await _departmentRepository.GetByIdAsync(e.DepartmentId);
                         decimal bonusAmount = bonusPool.CalculateBonus(e.Id);
                         BonusDTO employeeBonus = _mapper.Map<BonusDTO>(e);
+                        employeeBonus.Department = department.Title;
+                        employeeBonus.JobTitle = jobTitle.Title;
                         employeeBonus.BonusAmount = bonusAmount;
                         allBonuses.Add(employeeBonus);
                     }

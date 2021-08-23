@@ -58,7 +58,7 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
             {
                 decimal salary = findEmployee.Salary;
                 decimal employeeBonusPercentage = salary / _totalSalaryBudget;
-                bonus = employeeBonusPercentage * bonusPoolAmount;
+                bonus = Math.Round(employeeBonusPercentage * bonusPoolAmount, 2);
             } else
             {
                 string exceptionMessage = "Employee ID " + employeeId.ToString() + " was not found.";
