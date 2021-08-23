@@ -61,12 +61,13 @@ namespace SynetecAssessmentApi.Persistence.Exceptions
             else if
             (
                 exception is EmployeeNotFoundException
+                //|| exception is BonusCalculationException
             )
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 ErrorMessage = exception.Message;
 
-                _log.LogError($"EmployeeNotFoundException: {exception.Message}");
+                _log.LogError($"CustomException: {exception.Message}");
             }
             else
             {

@@ -2,7 +2,7 @@
 {
     public class BonusRequestDTO
     {
-        public double totalProfit { get; set; }
-        public double bonusPercentage { get; set; }
+        public decimal totalProfit { get; set; }
+        public decimal bonusPercentage { get; set; }
     }
 }

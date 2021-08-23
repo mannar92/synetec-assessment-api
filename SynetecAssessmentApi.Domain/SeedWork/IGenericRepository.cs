@@ -8,7 +8,7 @@ namespace SynetecAssessmentApi.Domain.SeedWork
     {
         Task<IEnumerable<T>> GetAllAsync();
 
-        T GetById(object id);
+        Task<T> GetByIdAsync(int id);
 
         void Create(T entity);
 

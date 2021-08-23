@@ -7,10 +7,10 @@ namespace SynetecAssessmentApi.Application.Dtos
     {
         public AutoMapperProfile()
         {
-            CreateMap<BonusDTO, Employee>()
-                .ForMember(dest => dest.Name, source => source.MapFrom(source => source.EmployeeName))
-                .ForMember(dest => dest.Surname, source => source.MapFrom(source => source.EmployeeSurname))
-                .ForMember(dest => dest.Id, source => source.MapFrom(source => source.EmployeeId));
+            CreateMap<Employee, BonusDTO>()
+                .ForMember(dest => dest.EmployeeName, source => source.MapFrom(source => source.Name))
+                .ForMember(dest => dest.EmployeeSurname, source => source.MapFrom(source => source.Surname))
+                .ForMember(dest => dest.EmployeeId, source => source.MapFrom(source => source.Id));
         }
     }
 }

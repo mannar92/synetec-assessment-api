@@ -10,6 +10,6 @@ namespace SynetecAssessmentApi.Application.Dtos
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string EmployeeSurname { get; set; }
-        public double BonusAmount { get; set; }
+        public decimal BonusAmount { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using SynetecAssessmentApi.Application.Dtos;
 using SynetecAssessmentApi.Application.Extensions;
 using SynetecAssessmentApi.Application.Services;
 using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
@@ -15,6 +16,7 @@ using SynetecAssessmentApi.Persistence.Data.DbContexts;
 using SynetecAssessmentApi.Persistence.Data.DbContexts.DbInitializer;
 using SynetecAssessmentApi.Persistence.Data.Repositories;
 using System;
+using System.Reflection;
 
 namespace SynetecAssessmentApi
 {
@@ -30,7 +32,7 @@ namespace SynetecAssessmentApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(AutoMapperProfile)));
 
             services.AddControllers();
 

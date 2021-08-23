@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using SynetecAssessmentApi.Application.Dtos;
+using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
 using SynetecAssessmentApi.Domain.SeedWork;
-using SynetecAssessmentApi.Persistence.Data.DbContexts;
+using SynetecAssessmentApi.Persistence.Exceptions.CustomExceptions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,91 +12,102 @@ namespace SynetecAssessmentApi.Application.Services
 {
     public class BonusService : IBonusService
     {
+        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepository _employeeRepository;
 
         public BonusService(
+            IMapper mapper,
             IUnitOfWork unitOfWork,
             IEmployeeRepository employeeRepository
         )
         {
+            _mapper = mapper;
             _employeeRepository = employeeRepository;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<List<BonusDTO>> GetAllBonuses(BonusRequestDTO bonusRequest)
         {
-            List<BonusDTO> allBonuses = new List<BonusDTO>();
-            var test = await _employeeRepository.GetAllAsync();
-            return null;
+            try
+            {
+                List<BonusDTO> allBonuses = new List<BonusDTO>();
+
+                BonusPool bonusPool = await CreateBonusPool(bonusRequest);
+
+                foreach (Employee e in bonusPool.Employees)
+                {
+                    try
+                    {
+                        decimal bonusAmount = bonusPool.CalculateBonus(e.Id);
+                        BonusDTO employeeBonus = _mapper.Map<BonusDTO>(e);
+                        employeeBonus.BonusAmount = bonusAmount;
+                        allBonuses.Add(employeeBonus);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new BonusCalculationException(ex.Message);
+                    }
+                }
+
+                return allBonuses;
+            }
+            catch (BonusCalculationException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public BonusDTO GetBonusById(int EmployeeId, BonusRequestDTO bonusRequest)
+        public async Task<BonusDTO> GetBonusById(int EmployeeId, BonusRequestDTO bonusRequest)
         {
-            return new BonusDTO();
+            try
+            {
+                BonusDTO employeeBonus = null;
+
+                Employee findEmployee = await _employeeRepository.GetByIdAsync(EmployeeId);
+
+                if (findEmployee != null)
+                {
+                    BonusPool bonusPool = await CreateBonusPool(bonusRequest);
+
+                    try
+                    {
+                        decimal bonusAmount = bonusPool.CalculateBonus(EmployeeId);
+                        employeeBonus = _mapper.Map<BonusDTO>(findEmployee);
+                        employeeBonus.BonusAmount = bonusAmount;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new BonusCalculationException(ex.Message);
+                    }
+
+                }
+
+                return employeeBonus;
+            }
+            catch (EmployeeNotFoundException)
+            {
+                throw;
+            }
+            catch (BonusCalculationException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-
-
-
-        //public async Task<IEnumerable<EmployeeDto>> GetEmployeesAsync()
-        //{
-        //    IEnumerable<EmployeeModel> employees = await _dbContext
-        //        .Employees
-        //        .Include(e => e.DepartmentId)
-        //        .ToListAsync();
-
-        //    List<EmployeeDto> result = new List<EmployeeDto>();
-
-        //    foreach (var employee in employees)
-        //    {
-        //        //result.Add(
-        //        //    new EmployeeDto
-        //        //    {
-        //        //        Fullname = employee.Name,
-        //        //        JobTitle = employee.JobTitleId,
-        //        //        Salary = employee.Salary,
-        //        //        Department = new DepartmentDto
-        //        //        {
-        //        //            Title = employee.Department.Title,
-        //        //            Description = employee.Department.Description
-        //        //        }
-        //        //    });
-        //    }
-
-        //    return result;
-        //}
-
-        //public async Task<BonusPoolCalculatorResultDto> CalculateAsync(int bonusPoolAmount, int selectedEmployeeId)
-        //{
-        //    //load the details of the selected employee using the Id
-        //    EmployeeModel employee = await _dbContext.Employees
-        //        .Include(e => e.DepartmentId)
-        //        .FirstOrDefaultAsync(item => item.Id == selectedEmployeeId);
-
-        //    //get the total salary budget for the company
-        //    int totalSalary = (int)_dbContext.Employees.Sum(item => item.Salary);
-
-        //    //calculate the bonus allocation for the employee
-        //    decimal bonusPercentage = (decimal)employee.Salary / (decimal)totalSalary;
-        //    int bonusAllocation = (int)(bonusPercentage * bonusPoolAmount);
-
-        //    return new BonusPoolCalculatorResultDto
-        //    {
-        //        //Employee = new EmployeeDto
-        //        //{
-        //        //    Fullname = employee.Name,
-        //        //    JobTitle = employee.JobTitleId,
-        //        //    Salary = employee.Salary,
-        //        //    Department = new DepartmentDto
-        //        //    {
-        //        //        Title = employee.Department.Title,
-        //        //        Description = employee.Department.Description
-        //        //    }
-        //        //},
-
-        //        Amount = bonusAllocation
-        //    };
-        //}
+        private async Task<BonusPool> CreateBonusPool(BonusRequestDTO bonusRequest)
+        {
+            IEnumerable<Employee> employees = await _employeeRepository.GetAllAsync();
+            List<Employee> employeesList = employees.ToList();
+            return new BonusPool(bonusRequest.totalProfit, bonusRequest.bonusPercentage, employeesList);
+        }
     }
 }

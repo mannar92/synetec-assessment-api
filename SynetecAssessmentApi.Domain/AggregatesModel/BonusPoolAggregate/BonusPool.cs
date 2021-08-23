@@ -2,6 +2,7 @@
 using SynetecAssessmentApi.SeedWork.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
@@ -12,15 +13,28 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
         public IReadOnlyCollection<Employee> Employees => _employees;
 
         private decimal _totalCompanyProfit;
+
+        [Range(0, 1, ErrorMessage = "The field {0} must be between 0.00 and 1.00.")]
         private decimal _profitToBonusPercentage;
+
         private decimal _totalSalaryBudget;
-        private readonly List<Employee> _employees;
+        private readonly List<Employee> _employees = new List<Employee>();
 
         public BonusPool (
             decimal totalCompanyProfit,
             decimal profitToBonusPercentage,
             List<Employee> employees
         ) {
+            if (totalCompanyProfit <= 0)
+            {
+                throw new Exception("Total company profit must be greater than zero before assigning bonus to empoyees.");
+            }
+
+            if (profitToBonusPercentage < 0 || profitToBonusPercentage > 1)
+            {
+                throw new Exception("Invalid percentage value, try a value between 0.00 and 1.00.");
+            }
+
             PoolDate = DateTime.Now;
             _employees.AddRange(employees);
             _totalCompanyProfit = totalCompanyProfit;
@@ -47,7 +61,8 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
                 bonus = employeeBonusPercentage * bonusPoolAmount;
             } else
             {
-                // throw employee not found exception
+                string exceptionMessage = "Employee ID " + employeeId.ToString() + " was not found.";
+                throw new Exception(exceptionMessage);
             }
 
             return bonus;

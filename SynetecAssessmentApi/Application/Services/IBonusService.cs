@@ -7,6 +7,6 @@ namespace SynetecAssessmentApi.Application.Services
     public interface IBonusService
     {
         Task<List<BonusDTO>> GetAllBonuses(BonusRequestDTO bonusRequest);
-        BonusDTO GetBonusById(int employeeId, BonusRequestDTO bonusRequest);
+        Task<BonusDTO> GetBonusById(int employeeId, BonusRequestDTO bonusRequest);
     }
 }
