@@ -42,11 +42,6 @@ namespace SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate
             _totalSalaryBudget = CalculateTotalSalary();
         }
 
-        public void AddEmployees(List<Employee> employees)
-        {
-            _employees.AddRange(employees);
-        }
-
         public decimal CalculateBonus(int employeeId)
         {
             decimal bonus = 0;
