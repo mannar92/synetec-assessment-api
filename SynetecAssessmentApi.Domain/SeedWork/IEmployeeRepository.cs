@@ -1,5 +1,4 @@
-﻿
-using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
+﻿using SynetecAssessmentApi.Domain.AggregatesModel.BonusPoolAggregate;
 
 namespace SynetecAssessmentApi.Domain.SeedWork
 {
